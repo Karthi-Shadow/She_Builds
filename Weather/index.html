@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #74ebd5, #4facfe);
+            padding: 20px;
+        }
+
+        .container {
+            width: 420px;
+            max-width: 100%;
+        }
+
+        .app {
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header */
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Search */
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-box input:focus {
+            border-color: #4facfe;
+        }
+
+        .search-box button {
+            padding: 14px 18px;
+            border: none;
+            border-radius: 12px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-box button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* Weather Card */
+
+        .weather-card {
+            background: linear-gradient(145deg, #2563eb, #38bdf8);
+            border-radius: 22px;
+            padding: 30px 25px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .location {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .condition {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        /* Temperature */
+
+        .temperature {
+            font-size: 65px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .temperature .degree {
+            font-size: 35px;
+            vertical-align: top;
+        }
+
+        /* Details */
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-box {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 15px;
+            padding: 18px 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .detail-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .detail-title {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        /* Footer */
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Loading */
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 480px) {
+
+            .app {
+                padding: 22px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .temperature {
+                font-size: 55px;
+            }
+
+            .temperature .degree {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="app">
+
+            <!-- Header -->
+
+            <div class="header">
+
+                <h1>🌤️ Weather</h1>
+
+                <p>
+                    Check the current weather anywhere
+                </p>
+
+            </div>
+
+
+          
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Enter city name"
+                >
+
+                <button onclick="getWeather()">
+                    Search
+                </button>
+
+            </div>
+
+
+          
+            <div id="weatherCard" class="weather-card">
+
+               
+
+                <div
+                    class="location"
+                    id="cityName"
+                >
+                    City
+                </div>
+
+
+               
+                <div
+                    class="condition"
+                    id="condition"
+                >
+                    Weather Condition
+                </div>
+
+
+            
+
+                <div class="temperature">
+
+                    <span id="temperature">
+                        --
+                    </span>
+
+                    <span class="degree">
+                        °C
+                    </span>
+
+                </div>
+
+
+         
+
+                <div class="details">
+
+
+              
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            💨
+                        </div>
+
+                        <div class="detail-title">
+                            WIND SPEED
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="wind"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                   
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            🌡️
+                        </div>
+
+                        <div class="detail-title">
+                            TEMPERATURE
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span id="temp">
+                                --
+                            </span>
+
+                            °C
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+          
+
+            <div class="footer">
+
+                Powered by Open-Meteo
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JavaScript -->
+
+    <script src="weather.js"></script>
+
+</body>
+
+</html>
